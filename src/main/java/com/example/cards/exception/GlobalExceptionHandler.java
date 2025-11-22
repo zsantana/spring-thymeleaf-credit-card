@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -117,6 +118,20 @@ public class GlobalExceptionHandler{
 
         logger.error("JSON parse error occurred: {} {}", message);
         return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    /**
+     * Trata erros de recursos estáticos não encontrados (ex: favicon.ico)
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Void> handleNoResourceFoundException(
+            NoResourceFoundException ex, WebRequest request) {
+        
+        // Não loga como erro, apenas como debug para não poluir os logs
+        logger.debug("Static resource not found: {}", ex.getResourcePath());
+        
+        // Retorna 404 sem corpo de resposta
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     /**
