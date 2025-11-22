@@ -1,5 +1,7 @@
 package com.example.cards.domain;
 
+import java.util.UUID;
+
 public class DefaultCreditCard implements CreditCard {
 
     private final String holderName;
@@ -36,5 +38,11 @@ public class DefaultCreditCard implements CreditCard {
     @Override
     public CreditCardBrand getBrand() {
         return brand;
+    }
+
+
+    @Override
+    public String getUUID() {
+        return UUID.randomUUID().toString();
     }
 }
