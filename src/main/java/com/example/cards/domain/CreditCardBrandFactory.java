@@ -1,15 +1,16 @@
 package com.example.cards.domain;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.cards.domain.amex.AmexStrategy;
 import com.example.cards.domain.master.MasterCardStrategy;
 import com.example.cards.domain.visa.VisaStrategy;
+import com.example.cards.exception.CreditCardNotFoundException;
 
 public class CreditCardBrandFactory {
 
-    private static final Map<CreditCardBrand, CreditCardBrandStrategy> strategies = new HashMap<>();
+    private static final Map<CreditCardBrand, CreditCardBrandStrategy> strategies = new ConcurrentHashMap<>();
     
     static {
         strategies.put(CreditCardBrand.VISA, new VisaStrategy());
@@ -20,7 +21,7 @@ public class CreditCardBrandFactory {
     public static CreditCardBrandStrategy getStrategy(CreditCardBrand brand) {
         CreditCardBrandStrategy strategy = strategies.get(brand);
         if (strategy == null) {
-            throw new IllegalArgumentException("Bandeira de cartão desconhecida");
+            throw new CreditCardNotFoundException("Bandeira de cartão desconhecida");
         }
         return strategy;
     }
