@@ -503,6 +503,10 @@ Expected response (400 Bad Request):
 }
 ```
 
+![alt text](image.png)
+
+![alt text](image-1.png)
+
 ## 🔒 Security and Best Practices
 
 - ✅ Input validation with Bean Validation
