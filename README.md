@@ -45,8 +45,11 @@ This project demonstrates a complete Spring Boot application that implements a c
 | **Spring Web** | - | For creating web and REST controllers |
 | **Spring Thymeleaf** | - | Template engine for HTML pages |
 | **Spring Validation** | - | Data validation with Bean Validation |
+| **Spring Kafka** | - | Kafka integration for event streaming |
 | **SpringDoc OpenAPI** | 3.0.0 | Automatic API documentation generation |
 | **Maven** | - | Dependency manager |
+| **Apache Kafka** | 7.5.0 | Distributed event streaming platform |
+| **Kafdrop** | latest | Kafka Web UI for monitoring |
 
 ## 🏗️ Architecture
 
@@ -99,12 +102,22 @@ The project follows a layered architecture:
 - ✅ **MasterCard**: Starts with 5, 16 digits
 - ✅ **American Express**: Starts with 3, 15 digits
 
+### Kafka Event Streaming
+
+- ✅ **Asynchronous Processing**: Cards sent to Kafka topics after registration
+- ✅ **Brand-specific Topics**: Separate topics for Visa, MasterCard, and Amex
+- ✅ **Batch Processing**: Groups cards in batches of 1000 for efficiency
+- ✅ **Performance Optimization**: Compression (LZ4), batching, and tuned linger time
+- ✅ **Monitoring**: Kafdrop UI for visualizing topics and messages
+- ✅ **Docker Compose**: Complete Kafka infrastructure with Zookeeper
+
 ## 📦 Prerequisites
 
 Before starting, make sure you have installed:
 
 - **Java JDK 21** or higher
 - **Maven 3.6+**
+- **Docker** and **Docker Compose** (for Kafka infrastructure)
 - **Git** (optional, to clone the repository)
 
 ## 🔧 Installation and Execution
@@ -115,13 +128,32 @@ Before starting, make sure you have installed:
 cd /home/rsantana/projetos/spring-boot/cartoes/credit-card-app
 ```
 
-### 2. Compile the project
+### 2. Start Kafka Infrastructure with Docker Compose
+
+```bash
+docker-compose up -d
+```
+
+This will start:
+- **Zookeeper** on port 2181
+- **Kafka** on port 9092
+- **Kafdrop** (Web UI) on port 9000
+
+### 3. Verify Kafka is running
+
+```bash
+docker-compose ps
+```
+
+All containers should be in "Up" state.
+
+### 4. Compile the project
 
 ```bash
 mvn clean install
 ```
 
-### 3. Run the application
+### 5. Run the application
 
 ```bash
 mvn spring-boot:run
@@ -133,9 +165,16 @@ Or run the generated JAR:
 java -jar target/credit-card-thymeleaf-0.0.1-SNAPSHOT.jar
 ```
 
-### 4. Access the application
+### 6. Access the application
 
 The application will be available at: **http://localhost:8080**
+
+### 7. Monitor Kafka with Kafdrop
+
+Access **http://localhost:9000** to see:
+- Available topics (cartoes-visa, cartoes-mastercard, cartoes-amex)
+- Messages sent to each topic
+- Real-time monitoring
 
 ## 🎨 Thymeleaf Integration
 
@@ -153,7 +192,7 @@ Thymeleaf is integrated through the `spring-boot-starter-thymeleaf` dependency a
 | Route | Method | Description | Template |
 |-------|--------|-------------|----------|
 | `/cards/new` | GET | Displays registration form | `register.html` |
-| `/cards` | POST | Processes card registration | - |
+| `/cards` | POST | Processes card registration and sends to Kafka | - |
 | `/cards/list` | GET | Lists all cards | `list.html` |
 
 ### Template Example (register.html)
@@ -327,7 +366,73 @@ public class CreditCardApiController {
 }
 ```
 
-## 📁 Project Structure
+## � Kafka Architecture
+
+The application implements an asynchronous event streaming architecture using Kafka:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│              Credit Card Registration                    │
+│                   (Web/API)                              │
+└────────────────────┬────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│         CreditCardRegistrationService                    │
+│         - Validates card                                 │
+│         - Buffers by brand                               │
+│         - Batch processing (1000 cards)                  │
+└────────────────────┬────────────────────────────────────┘
+                     │
+          ┌──────────┴──────────┬──────────────┐
+          ▼                     ▼              ▼
+    ┌─────────┐          ┌─────────┐    ┌─────────┐
+    │  VISA   │          │  MASTER │    │  AMEX   │
+    │  Topic  │          │  Topic  │    │  Topic  │
+    └─────────┘          └─────────┘    └─────────┘
+          │                     │              │
+          └──────────┬──────────┴──────────────┘
+                     ▼
+            ┌─────────────────┐
+            │  Kafka Cluster  │
+            │  (Zookeeper)    │
+            └─────────────────┘
+                     │
+                     ▼
+            ┌─────────────────┐
+            │    Kafdrop      │
+            │  (Monitoring)   │
+            └─────────────────┘
+```
+
+### Kafka Topics
+
+The system uses **3 separate topics** for brand-specific processing:
+
+- **cartoes-visa**: All Visa cards
+- **cartoes-mastercard**: All MasterCard cards
+- **cartoes-amex**: All American Express cards
+
+### Performance Optimizations
+
+| Configuration | Value | Description |
+|---------------|-------|-------------|
+| `batch.size` | 32KB | Maximum batch size in bytes |
+| `linger.ms` | 5ms | Wait time to accumulate messages |
+| `compression.type` | lz4 | Fast compression algorithm |
+| `acks` | 1 | Leader acknowledgment (balance speed/safety) |
+| `BATCH_SIZE` | 1000 | Cards per batch processing |
+
+### Event Flow
+
+1. **Registration**: User submits card via Web or API
+2. **Validation**: Strategy pattern validates card by brand
+3. **Buffering**: Card added to brand-specific buffer
+4. **Batch Processing**: Every 500ms or when 1000 cards accumulated
+5. **Kafka Send**: Batch sent to appropriate Kafka topic
+6. **Monitoring**: View messages in Kafdrop UI
+
+## �📁 Project Structure
 
 ```
 src/
@@ -354,17 +459,18 @@ src/
 │   │   │   ├── ErrorResponse.java             # Error DTO
 │   │   │   └── CreditCardNotFoundException.java
 │   │   ├── service/
-│   │   │   └── CreditCardRegistrationService.java  # Business logic
+│   │   │   └── CreditCardRegistrationService.java  # Business logic + Kafka
 │   │   └── web/
 │   │       ├── CreditCardController.java      # Thymeleaf controller
 │   │       ├── CreditCardApiController.java   # REST controller
 │   │       ├── CreditCardForm.java            # Form DTO
 │   │       └── CreditCardApiRequest.java      # API Request DTO
 │   └── resources/
-│       ├── application.properties             # Configuration
+│       ├── application.properties             # Configuration (Kafka included)
 │       └── templates/
 │           ├── register.html                  # Registration form
 │           └── list.html                      # Card listing
+├── docker-compose.yml                         # Kafka infrastructure
 └── test/
     └── java/...
 ```
@@ -507,6 +613,21 @@ Expected response (400 Bad Request):
 
 ![alt text](image-1.png)
 
+# Performance
+![alt text](image-2.png)
+
+## hey
+```
+hey -z 60s -c 100 -T 'application/json' -D './payload-amex.json' -m POST http://localhost:8080/api/cards
+```
+
+## Apache Bench
+```
+ab -n 1000000 -c 100 -p payload-visa.json -T application/json http://localhost:8080/api/cards
+```
+![alt text](image-3.png)
+
+
 ## 🔒 Security and Best Practices
 
 - ✅ Input validation with Bean Validation
@@ -532,6 +653,17 @@ server.port=8080
 # Thymeleaf (disable cache in dev)
 spring.thymeleaf.cache=false
 
+# Kafka Configuration
+spring.kafka.bootstrap-servers=localhost:9092
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+# Kafka Performance Optimizations
+spring.kafka.producer.properties.linger.ms=5
+spring.kafka.producer.properties.batch.size=32768
+spring.kafka.producer.properties.compression.type=lz4
+spring.kafka.producer.properties.acks=1
+
 # SpringDoc OpenAPI
 # springdoc.api-docs.path=/v3/api-docs
 # springdoc.swagger-ui.path=/swagger-ui.html
@@ -539,8 +671,111 @@ spring.thymeleaf.cache=false
 # springdoc.swagger-ui.tagsSorter=alpha
 ```
 
+### docker-compose.yml
+
+```yaml
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafdrop
+    depends_on:
+      - kafka
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+```
+
+## 🎯 Kafka Usage Examples
+
+### Example 1: Monitor Topics in Kafdrop
+
+1. Start infrastructure: `docker-compose up -d`
+2. Access Kafdrop: http://localhost:9000
+3. View the 3 topics: `cartoes-visa`, `cartoes-mastercard`, `cartoes-amex`
+4. Click on a topic to see messages
+
+### Example 2: Register Cards and View in Kafka
+
+```bash
+# Register a Visa card
+curl -X POST http://localhost:8080/api/cards \
+  -H "Content-Type: application/json" \
+  -d '{
+    "holderName": "John Doe",
+    "number": "4111111111111111",
+    "brand": "VISA"
+  }'
+
+# Check in Kafdrop
+# Go to http://localhost:9000/topic/cartoes-visa/messages
+# You will see the card in JSON format
+```
+
+### Example 3: Check Kafka Logs
+
+```bash
+# View application logs to see batch processing
+docker-compose logs -f
+
+# You will see:
+# "### Processando lote de X cartões da bandeira VISA para o tópico cartoes-visa"
+```
+
+### Example 4: Verify Kafka is Working
+
+```bash
+# Check containers
+docker-compose ps
+
+# Should show:
+# zookeeper - Up
+# kafka - Up  
+# kafdrop - Up
+```
+
+### Example 5: Stop and Clean Kafka
+
+```bash
+# Stop containers
+docker-compose down
+
+# Remove volumes (clean all data)
+docker-compose down -v
+```
+
 ## 🚧 Future Improvements
 
+- [x] ~~Kafka integration for asynchronous processing~~
+- [x] ~~Docker Compose for infrastructure~~
+- [ ] Kafka consumers for processing events
+- [ ] Dead Letter Queue (DLQ) for failed messages
 - [ ] Database persistence (PostgreSQL/MySQL)
 - [ ] Implement Luhn algorithm for complete validation
 - [ ] Add JWT authentication
@@ -550,7 +785,7 @@ spring.thymeleaf.cache=false
 - [ ] Create statistics dashboard
 - [ ] Implement soft delete
 - [ ] Add operation auditing
-- [ ] Dockerize the application
+- [ ] Kafka Streams for real-time analytics
 
 ## 🤝 Contributing
 
