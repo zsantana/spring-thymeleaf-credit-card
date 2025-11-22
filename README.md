@@ -16,17 +16,8 @@ Complete credit card management system developed with **Spring Boot**, offering 
 
 Developed by **Reinaldo Jesus Santana**
 
-- Email: reinaldojsantana@gmail.com
 - LinkedIn: https://www.linkedin.com/in/reinaldo-jesus-santana-09079814/
 
-## 📞 Support
-
-For questions and support:
-
-- Open an issue in the repository
-- Contact via email: reinaldojsantana@gmail.com
-
----
 
 ⭐ If this project was useful to you, consider giving it a star!
 
@@ -575,18 +566,5 @@ This project is licensed under the MIT License.
 
 Developed by **Reinaldo Jesus Santana**
 
-- Email: reinaldojsantana@gmail.com
 - linkdIn: https://www.linkedin.com/in/reinaldo-jesus-santana-09079814/
 
-## 📞 Suporte
-
-Para questões e suporte:
-
-- Abra uma issue no repositório
-- Entre em contato via email: reinaldojsantana@gmail.com
-
----
-
-⭐ Se este projeto foi útil para você, considere dar uma estrela!
-
-**Desenvolvido com ❤️ usando Spring Boot e Thymeleaf**
