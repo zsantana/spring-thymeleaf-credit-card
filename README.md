@@ -1,173 +1,191 @@
 # 💳 Credit Card Management System
 
-Sistema completo de gerenciamento de cartões de crédito desenvolvido com **Spring Boot**, oferecendo tanto interface web com **Thymeleaf** quanto **API REST** com documentação OpenAPI/Swagger.
+Complete credit card management system developed with **Spring Boot**, offering both a web interface with **Thymeleaf** and a **REST API** with OpenAPI/Swagger documentation.
 
-## 📋 Índice
+## 📋 Table of Contents
 
-- [Sobre o Projeto](#sobre-o-projeto)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Arquitetura](#arquitetura)
-- [Funcionalidades](#funcionalidades)
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação e Execução](#instalação-e-execução)
-- [Integração Thymeleaf](#integração-thymeleaf)
-- [API REST](#api-rest)
-- [Documentação OpenAPI/Swagger](#documentação-openapiswagger)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Padrões de Projeto](#padrões-de-projeto)
-- [Exemplos de Uso](#exemplos-de-uso)
+- [About the Project](#about-the-project)
+- [Technologies Used](#technologies-used)
+- [Architecture](#architecture)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation and Execution](#installation-and-execution)
+- [Thymeleaf Integration](#thymeleaf-integration)
+- [REST API](#rest-api)
+- [OpenAPI## 👨‍💻 Author
 
-## 🎯 Sobre o Projeto
+Developed by **Reinaldo Jesus Santana**
 
-Este projeto demonstra uma aplicação Spring Boot completa que implementa um sistema de gerenciamento de cartões de crédito com:
+- Email: reinaldojsantana@gmail.com
+- LinkedIn: https://www.linkedin.com/in/reinaldo-jesus-santana-09079814/
 
-- **Interface Web (Thymeleaf)**: Formulários interativos para cadastro e listagem de cartões
-- **API REST**: Endpoints JSON para integração com outros sistemas
-- **Validação de Bandeiras**: Suporte para Visa, MasterCard e American Express
-- **Padrão Strategy**: Validação específica por bandeira de cartão
-- **Documentação Automática**: Swagger UI para explorar e testar a API
+## 📞 Support
 
-## 🚀 Tecnologias Utilizadas
+For questions and support:
 
-| Tecnologia | Versão | Descrição |
-|------------|--------|-----------|
-| **Java** | 21 | Linguagem de programação |
-| **Spring Boot** | 4.0.0 | Framework principal |
-| **Spring Web** | - | Para criação de controllers web e REST |
-| **Spring Thymeleaf** | - | Template engine para páginas HTML |
-| **Spring Validation** | - | Validação de dados com Bean Validation |
-| **SpringDoc OpenAPI** | 3.0.0 | Geração automática de documentação API |
-| **Maven** | - | Gerenciador de dependências |
+- Open an issue in the repository
+- Contact via email: reinaldojsantana@gmail.com
 
-## 🏗️ Arquitetura
+---
 
-O projeto segue uma arquitetura em camadas:
+⭐ If this project was useful to you, consider giving it a star!
+
+**Developed with ❤️ using Spring Boot and Thymeleaf**ion](#openapiswagger-documentation)
+- [Project Structure](#project-structure)
+- [Design Patterns](#design-patterns)
+- [Usage Examples](#usage-examples)
+
+## 🎯 About the Project
+
+This project demonstrates a complete Spring Boot application that implements a credit card management system with:
+
+- **Web Interface (Thymeleaf)**: Interactive forms for card registration and listing
+- **REST API**: JSON endpoints for integration with other systems
+- **Brand Validation**: Support for Visa, MasterCard, and American Express
+- **Strategy Pattern**: Brand-specific validation for each card type
+- **Automatic Documentation**: Swagger UI to explore and test the API
+
+## 🚀 Technologies Used
+
+| Technology | Version | Description |
+|------------|---------|-------------|
+| **Java** | 21 | Programming language |
+| **Spring Boot** | 4.0.0 | Main framework |
+| **Spring Web** | - | For creating web and REST controllers |
+| **Spring Thymeleaf** | - | Template engine for HTML pages |
+| **Spring Validation** | - | Data validation with Bean Validation |
+| **SpringDoc OpenAPI** | 3.0.0 | Automatic API documentation generation |
+| **Maven** | - | Dependency manager |
+
+## 🏗️ Architecture
+
+The project follows a layered architecture:
 
 ```
 ┌─────────────────────────────────────┐
-│     Camada de Apresentação          │
-│  (Controllers Web + API REST)       │
+│     Presentation Layer              │
+│  (Web Controllers + REST API)       │
 ├─────────────────────────────────────┤
-│     Camada de Serviço               │
-│  (Lógica de Negócio)                │
+│     Service Layer                   │
+│  (Business Logic)                   │
 ├─────────────────────────────────────┤
-│     Camada de Domínio               │
-│  (Entidades + Strategy Pattern)     │
+│     Domain Layer                    │
+│  (Entities + Strategy Pattern)      │
 ├─────────────────────────────────────┤
-│     Camada de Configuração          │
+│     Configuration Layer             │
 │  (OpenAPI, Exception Handlers)      │
 └─────────────────────────────────────┘
 ```
 
-### Componentes Principais
+### Main Components
 
-- **Controllers**: Gerenciam requisições HTTP (Web e API)
-- **Services**: Contêm a lógica de negócio
-- **Domain**: Modelos de domínio e estratégias de validação
-- **Exception Handlers**: Tratamento centralizado de erros
+- **Controllers**: Manage HTTP requests (Web and API)
+- **Services**: Contain business logic
+- **Domain**: Domain models and validation strategies
+- **Exception Handlers**: Centralized error handling
 
-## ✨ Funcionalidades
+## ✨ Features
 
-### Interface Web (Thymeleaf)
+### Web Interface (Thymeleaf)
 
-- ✅ Formulário de cadastro de cartões com validação
-- ✅ Seleção de bandeira (Visa, MasterCard, Amex)
-- ✅ Listagem de cartões registrados
-- ✅ Design responsivo e moderno
-- ✅ Mensagens de erro amigáveis
+- ✅ Card registration form with validation
+- ✅ Brand selection (Visa, MasterCard, Amex)
+- ✅ Registered cards listing
+- ✅ Responsive and modern design
+- ✅ User-friendly error messages
 
-### API REST
+### REST API
 
-- ✅ Endpoint para listar todos os cartões (`GET /api/cards`)
-- ✅ Endpoint para cadastrar novo cartão (`POST /api/cards`)
-- ✅ Validação automática com Bean Validation
-- ✅ Respostas em formato JSON
-- ✅ Tratamento de erros padronizado
+- ✅ Endpoint to list all cards (`GET /api/cards`)
+- ✅ Endpoint to register new card (`POST /api/cards`)
+- ✅ Automatic validation with Bean Validation
+- ✅ JSON format responses
+- ✅ Standardized error handling
 
-### Validação de Bandeiras
+### Brand Validation
 
-- ✅ **Visa**: Inicia com 4, 16 dígitos
-- ✅ **MasterCard**: Inicia com 5, 16 dígitos
-- ✅ **American Express**: Inicia com 3, 15 dígitos
+- ✅ **Visa**: Starts with 4, 16 digits
+- ✅ **MasterCard**: Starts with 5, 16 digits
+- ✅ **American Express**: Starts with 3, 15 digits
 
-## 📦 Pré-requisitos
+## 📦 Prerequisites
 
-Antes de iniciar, certifique-se de ter instalado:
+Before starting, make sure you have installed:
 
-- **Java JDK 21** ou superior
+- **Java JDK 21** or higher
 - **Maven 3.6+**
-- **Git** (opcional, para clonar o repositório)
+- **Git** (optional, to clone the repository)
 
-## 🔧 Instalação e Execução
+## 🔧 Installation and Execution
 
-### 1. Clone o repositório (ou navegue até o diretório do projeto)
+### 1. Clone the repository (or navigate to the project directory)
 
 ```bash
 cd /home/rsantana/projetos/spring-boot/cartoes/credit-card-app
 ```
 
-### 2. Compile o projeto
+### 2. Compile the project
 
 ```bash
 mvn clean install
 ```
 
-### 3. Execute a aplicação
+### 3. Run the application
 
 ```bash
 mvn spring-boot:run
 ```
 
-Ou execute o JAR gerado:
+Or run the generated JAR:
 
 ```bash
 java -jar target/credit-card-thymeleaf-0.0.1-SNAPSHOT.jar
 ```
 
-### 4. Acesse a aplicação
+### 4. Access the application
 
-A aplicação estará disponível em: **http://localhost:8080**
+The application will be available at: **http://localhost:8080**
 
-## 🎨 Integração Thymeleaf
+## 🎨 Thymeleaf Integration
 
-### Como Funciona
+### How It Works
 
-O Thymeleaf é integrado através da dependência `spring-boot-starter-thymeleaf` e fornece:
+Thymeleaf is integrated through the `spring-boot-starter-thymeleaf` dependency and provides:
 
-1. **Templates HTML**: Localizados em `src/main/resources/templates/`
-2. **Controller Web**: `CreditCardController` renderiza as views
-3. **Model Binding**: Dados são passados do controller para a view via `Model`
-4. **Form Binding**: Formulários HTML são vinculados a objetos Java
+1. **HTML Templates**: Located in `src/main/resources/templates/`
+2. **Web Controller**: `CreditCardController` renders the views
+3. **Model Binding**: Data is passed from controller to view via `Model`
+4. **Form Binding**: HTML forms are bound to Java objects
 
-### Endpoints Web
+### Web Endpoints
 
-| Rota | Método | Descrição | Template |
-|------|--------|-----------|----------|
-| `/cards/new` | GET | Exibe formulário de cadastro | `register.html` |
-| `/cards` | POST | Processa cadastro de cartão | - |
-| `/cards/list` | GET | Lista todos os cartões | `list.html` |
+| Route | Method | Description | Template |
+|-------|--------|-------------|----------|
+| `/cards/new` | GET | Displays registration form | `register.html` |
+| `/cards` | POST | Processes card registration | - |
+| `/cards/list` | GET | Lists all cards | `list.html` |
 
-### Exemplo de Template (register.html)
+### Template Example (register.html)
 
 ```html
 <form th:action="@{/cards}" th:object="${cardForm}" method="post">
     <div class="form-group">
-        <label for="holderName">Nome do Titular</label>
+        <label for="holderName">Cardholder Name</label>
         <input type="text" th:field="*{holderName}" />
         <span th:if="${#fields.hasErrors('holderName')}" 
               th:errors="*{holderName}" 
               class="error"></span>
     </div>
-    <!-- Mais campos... -->
+    <!-- More fields... -->
 </form>
 ```
 
-### Validação no Thymeleaf
+### Validation in Thymeleaf
 
-A validação é feita através de:
-- **@Valid** no controller
-- **BindingResult** para capturar erros
-- **th:errors** para exibir mensagens
+Validation is done through:
+- **@Valid** in the controller
+- **BindingResult** to capture errors
+- **th:errors** to display messages
 
 ```java
 @PostMapping
@@ -177,38 +195,38 @@ public String registerCard(@Valid @ModelAttribute("cardForm") CreditCardForm for
     if (bindingResult.hasErrors()) {
         return "register";
     }
-    // Processar...
+    // Process...
 }
 ```
 
-## 🔌 API REST
+## 🔌 REST API
 
-### Endpoints Disponíveis
+### Available Endpoints
 
-#### 1. Listar Todos os Cartões
+#### 1. List All Cards
 
 ```http
 GET /api/cards
 Accept: application/json
 ```
 
-**Resposta (200 OK):**
+**Response (200 OK):**
 ```json
 [
     {
-        "holderName": "João Silva",
+        "holderName": "John Doe",
         "number": "4111111111111111",
         "brand": "VISA"
     },
     {
-        "holderName": "Maria Santos",
+        "holderName": "Jane Smith",
         "number": "5500000000000004",
         "brand": "MASTERCARD"
     }
 ]
 ```
 
-#### 2. Cadastrar Novo Cartão
+#### 2. Register New Card
 
 ```http
 POST /api/cards
@@ -219,65 +237,65 @@ Accept: application/json
 **Request Body:**
 ```json
 {
-    "holderName": "Carlos Oliveira",
+    "holderName": "Bob Johnson",
     "number": "4111111111111111",
     "brand": "VISA"
 }
 ```
 
-**Resposta (201 Created):**
+**Response (201 Created):**
 ```json
 {
-    "holderName": "Carlos Oliveira",
+    "holderName": "Bob Johnson",
     "number": "4111111111111111",
     "brand": "VISA"
 }
 ```
 
-**Resposta de Erro (400 Bad Request):**
+**Error Response (400 Bad Request):**
 ```json
 {
     "timestamp": "2025-11-22T10:30:00",
     "status": 400,
     "error": "Bad Request",
-    "message": "Visa: número deve iniciar com 4",
+    "message": "Visa: number must start with 4",
     "path": "/api/cards"
 }
 ```
 
-### Tratamento de Erros
+### Error Handling
 
-O `GlobalExceptionHandler` captura e trata automaticamente:
+The `GlobalExceptionHandler` automatically catches and handles:
 
-- **MethodArgumentNotValidException**: Erros de validação (@Valid)
-- **IllegalArgumentException**: Erros de regras de negócio
-- **CreditCardNotFoundException**: Cartão não encontrado
-- **Exception**: Erros gerais
+- **MethodArgumentNotValidException**: Validation errors (@Valid)
+- **IllegalArgumentException**: Business rule errors
+- **CreditCardNotFoundException**: Card not found
+- **Exception**: General errors
 
-Todas as respostas de erro seguem o padrão:
+All error responses follow the standard:
 
 ```json
 {
     "timestamp": "ISO-8601 DateTime",
     "status": 400,
-    "error": "Tipo do Erro",
-    "message": "Mensagem descritiva",
-    "path": "/caminho/endpoint"
+    "error": "Error Type",
+    "message": "Descriptive message",
+    "path": "/endpoint/path"
 }
 ```
 
-## 📚 Documentação OpenAPI/Swagger
+## 📚 OpenAPI/Swagger Documentation
 
-### Acessando a Documentação
+### Accessing the Documentation
 
-A documentação interativa está disponível em:
+Interactive documentation is available at:
 
 - **Swagger UI**: http://localhost:8080/swagger-ui.html
 - **OpenAPI JSON**: http://localhost:8080/v3/api-docs
 
-### Configuração
+### Configuration
 
-A configuração do OpenAPI está em `OpenApiConfig.java`:
+The OpenAPI configuration is in `OpenApiConfig.java`:
 
 ```java
 @Configuration
@@ -287,84 +305,84 @@ public class OpenApiConfig {
         return new OpenAPI()
             .info(new Info()
                 .title("Credit Cards API")
-                .description("API REST para gerenciamento de cartões de crédito")
+                .description("REST API for credit card management")
                 .version("1.0.0"))
             .addServersItem(new Server()
                 .url("http://localhost:8080")
-                .description("Servidor de Desenvolvimento"));
+                .description("Development Server"));
     }
 }
 ```
 
-### Anotações Utilizadas
+### Annotations Used
 
-- **@Tag**: Agrupa endpoints por categoria
-- **@Operation**: Descreve a operação
-- **@ApiResponses**: Define possíveis respostas HTTP
+- **@Tag**: Groups endpoints by category
+- **@Operation**: Describes the operation
+- **@ApiResponses**: Defines possible HTTP responses
 
 ```java
-@Tag(name = "Credit Cards API", description = "API REST para gerenciamento de cartões")
+@Tag(name = "Credit Cards API", description = "REST API for credit card management")
 @RestController
 @RequestMapping("/api/cards")
 public class CreditCardApiController {
     
-    @Operation(summary = "Listar todos os cartões")
+    @Operation(summary = "List all cards")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
-        @ApiResponse(responseCode = "500", description = "Erro interno")
+        @ApiResponse(responseCode = "200", description = "List returned successfully"),
+        @ApiResponse(responseCode = "500", description = "Internal error")
     })
     @GetMapping
     public List<CreditCard> getAllCards() { ... }
 }
 ```
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 src/
 ├── main/
 │   ├── java/com/example/cards/
-│   │   ├── CardsApplication.java              # Classe principal
+│   │   ├── CardsApplication.java              # Main class
 │   │   ├── config/
-│   │   │   └── OpenApiConfig.java             # Configuração Swagger
+│   │   │   └── OpenApiConfig.java             # Swagger configuration
 │   │   ├── domain/
-│   │   │   ├── CreditCard.java                # Interface do cartão
-│   │   │   ├── DefaultCreditCard.java         # Implementação padrão
-│   │   │   ├── CreditCardBrand.java           # Enum de bandeiras
-│   │   │   ├── CreditCardBrandStrategy.java   # Interface Strategy
-│   │   │   ├── CreditCardBrandFactory.java    # Factory de estratégias
+│   │   │   ├── CreditCard.java                # Card interface
+│   │   │   ├── DefaultCreditCard.java         # Default implementation
+│   │   │   ├── CreditCardBrand.java           # Brand enum
+│   │   │   ├── CreditCardBrandStrategy.java   # Strategy interface
+│   │   │   ├── CreditCardBrandFactory.java    # Strategy factory
 │   │   │   ├── CreditCardBrandStrategyProvider.java
 │   │   │   ├── visa/
-│   │   │   │   └── VisaStrategy.java          # Validação Visa
+│   │   │   │   └── VisaStrategy.java          # Visa validation
 │   │   │   ├── master/
-│   │   │   │   └── MasterCardStrategy.java    # Validação MasterCard
+│   │   │   │   └── MasterCardStrategy.java    # MasterCard validation
 │   │   │   └── amex/
-│   │   │       └── AmexStrategy.java          # Validação Amex
+│   │   │       └── AmexStrategy.java          # Amex validation
 │   │   ├── exception/
-│   │   │   ├── GlobalExceptionHandler.java    # Tratamento global de erros
-│   │   │   ├── ErrorResponse.java             # DTO de erro
+│   │   │   ├── GlobalExceptionHandler.java    # Global error handling
+│   │   │   ├── ErrorResponse.java             # Error DTO
 │   │   │   └── CreditCardNotFoundException.java
 │   │   ├── service/
-│   │   │   └── CreditCardRegistrationService.java  # Lógica de negócio
+│   │   │   └── CreditCardRegistrationService.java  # Business logic
 │   │   └── web/
-│   │       ├── CreditCardController.java      # Controller Thymeleaf
-│   │       ├── CreditCardApiController.java   # Controller REST
+│   │       ├── CreditCardController.java      # Thymeleaf controller
+│   │       ├── CreditCardApiController.java   # REST controller
 │   │       ├── CreditCardForm.java            # Form DTO
 │   │       └── CreditCardApiRequest.java      # API Request DTO
 │   └── resources/
-│       ├── application.properties             # Configurações
+│       ├── application.properties             # Configuration
 │       └── templates/
-│           ├── register.html                  # Formulário de cadastro
-│           └── list.html                      # Listagem de cartões
+│           ├── register.html                  # Registration form
+│           └── list.html                      # Card listing
 └── test/
     └── java/...
 ```
 
-## 🎯 Padrões de Projeto
+## 🎯 Design Patterns
 
 ### 1. Strategy Pattern
 
-Implementado para validação de bandeiras de cartão:
+Implemented for card brand validation:
 
 ```java
 public interface CreditCardBrandStrategy {
@@ -373,20 +391,20 @@ public interface CreditCardBrandStrategy {
     double calculateFee(double amount);
 }
 
-// Implementações específicas
+// Specific implementations
 class VisaStrategy implements CreditCardBrandStrategy { ... }
 class MasterCardStrategy implements CreditCardBrandStrategy { ... }
 class AmexStrategy implements CreditCardBrandStrategy { ... }
 ```
 
-**Benefícios:**
-- Facilita adição de novas bandeiras
-- Separa lógica de validação por bandeira
-- Código mais limpo e manutenível
+**Benefits:**
+- Facilitates adding new brands
+- Separates validation logic by brand
+- Cleaner and more maintainable code
 
 ### 2. Factory Pattern
 
-`CreditCardBrandFactory` cria instâncias de estratégias:
+`CreditCardBrandFactory` creates strategy instances:
 
 ```java
 public class CreditCardBrandFactory {
@@ -402,121 +420,121 @@ public class CreditCardBrandFactory {
 
 ### 3. DTO Pattern
 
-Separação entre entidades de domínio e objetos de transferência:
+Separation between domain entities and transfer objects:
 
-- **CreditCardForm**: Para formulários web
-- **CreditCardApiRequest**: Para requisições API
-- **ErrorResponse**: Para respostas de erro
+- **CreditCardForm**: For web forms
+- **CreditCardApiRequest**: For API requests
+- **ErrorResponse**: For error responses
 
-## 💡 Exemplos de Uso
+## 💡 Usage Examples
 
-### Exemplo 1: Testar via Swagger UI
+### Example 1: Test via Swagger UI
 
-1. Acesse: http://localhost:8080/swagger-ui.html
-2. Expanda o endpoint `POST /api/cards`
-3. Clique em "Try it out"
-4. Insira o JSON:
+1. Access: http://localhost:8080/swagger-ui.html
+2. Expand the `POST /api/cards` endpoint
+3. Click "Try it out"
+4. Insert the JSON:
 ```json
 {
-    "holderName": "João Silva",
+    "holderName": "John Doe",
     "number": "4111111111111111",
     "brand": "VISA"
 }
 ```
-5. Clique em "Execute"
+5. Click "Execute"
 
-### Exemplo 2: Testar via cURL
+### Example 2: Test via cURL
 
 ```bash
-# Listar cartões
+# List cards
 curl -X GET http://localhost:8080/api/cards
 
-# Cadastrar cartão Visa
+# Register Visa card
 curl -X POST http://localhost:8080/api/cards \
   -H "Content-Type: application/json" \
   -d '{
-    "holderName": "João Silva",
+    "holderName": "John Doe",
     "number": "4111111111111111",
     "brand": "VISA"
   }'
 
-# Cadastrar cartão MasterCard
+# Register MasterCard
 curl -X POST http://localhost:8080/api/cards \
   -H "Content-Type: application/json" \
   -d '{
-    "holderName": "Maria Santos",
+    "holderName": "Jane Smith",
     "number": "5500000000000004",
     "brand": "MASTERCARD"
   }'
 
-# Cadastrar cartão Amex
+# Register Amex card
 curl -X POST http://localhost:8080/api/cards \
   -H "Content-Type: application/json" \
   -d '{
-    "holderName": "Carlos Oliveira",
+    "holderName": "Bob Johnson",
     "number": "340000000000009",
     "brand": "AMEX"
   }'
 ```
 
-### Exemplo 3: Usar Interface Web
+### Example 3: Use Web Interface
 
-1. Acesse: http://localhost:8080/cards/new
-2. Preencha o formulário:
-   - Nome do Titular: João Silva
-   - Número do Cartão: 4111111111111111
-   - Bandeira: VISA
-3. Clique em "Registrar Cartão"
-4. Será redirecionado para a lista de cartões
+1. Access: http://localhost:8080/cards/new
+2. Fill out the form:
+   - Cardholder Name: John Doe
+   - Card Number: 4111111111111111
+   - Brand: VISA
+3. Click "Register Card"
+4. You will be redirected to the card list
 
-### Exemplo 4: Teste de Validação
+### Example 4: Validation Test
 
-Tentando cadastrar cartão inválido:
+Trying to register an invalid card:
 
 ```bash
 curl -X POST http://localhost:8080/api/cards \
   -H "Content-Type: application/json" \
   -d '{
-    "holderName": "Teste",
+    "holderName": "Test",
     "number": "1234567890123456",
     "brand": "VISA"
   }'
 ```
 
-Resposta esperada (400 Bad Request):
+Expected response (400 Bad Request):
 ```json
 {
     "timestamp": "2025-11-22T10:30:00",
     "status": 400,
     "error": "Bad Request",
-    "message": "Visa: número deve iniciar com 4",
+    "message": "Visa: number must start with 4",
     "path": "/api/cards"
 }
 ```
 
-## 🔒 Segurança e Boas Práticas
+## 🔒 Security and Best Practices
 
-- ✅ Validação de entrada com Bean Validation
-- ✅ Tratamento centralizado de exceções
-- ✅ Separação de camadas (MVC)
-- ✅ Uso de interfaces para desacoplamento
-- ✅ Padrões de projeto para flexibilidade
-- ⚠️ **Nota**: Este é um projeto de demonstração. Para produção, considere:
-  - Adicionar autenticação/autorização (Spring Security)
-  - Implementar persistência real (JPA/Hibernate)
-  - Adicionar testes unitários e de integração
-  - Implementar HTTPS
-  - Mascarar números de cartão nos logs
+- ✅ Input validation with Bean Validation
+- ✅ Centralized exception handling
+- ✅ Layer separation (MVC)
+- ✅ Interface usage for decoupling
+- ✅ Design patterns for flexibility
+- ⚠️ **Note**: This is a demonstration project. For production, consider:
+  - Adding authentication/authorization (Spring Security)
+  - Implementing real persistence (JPA/Hibernate)
+  - Adding unit and integration tests
+  - Implementing HTTPS
+  - Masking card numbers in logs
 
-## 📝 Configurações
+## 📝 Configuration
 
 ### application.properties
 
 ```properties
-# Porta do servidor
+# Server port
 server.port=8080
 
-# Thymeleaf (desabilita cache em dev)
+# Thymeleaf (disable cache in dev)
 spring.thymeleaf.cache=false
 
 # SpringDoc OpenAPI
@@ -526,36 +544,36 @@ spring.thymeleaf.cache=false
 # springdoc.swagger-ui.tagsSorter=alpha
 ```
 
-## 🚧 Melhorias Futuras
+## 🚧 Future Improvements
 
-- [ ] Persistência com banco de dados (PostgreSQL/MySQL)
-- [ ] Implementar algoritmo de Luhn para validação completa
-- [ ] Adicionar autenticação JWT
-- [ ] Criar testes unitários e de integração
-- [ ] Implementar paginação na listagem
-- [ ] Adicionar busca e filtros
-- [ ] Criar dashboard com estatísticas
-- [ ] Implementar soft delete
-- [ ] Adicionar auditoria de operações
-- [ ] Dockerizar a aplicação
+- [ ] Database persistence (PostgreSQL/MySQL)
+- [ ] Implement Luhn algorithm for complete validation
+- [ ] Add JWT authentication
+- [ ] Create unit and integration tests
+- [ ] Implement pagination in listing
+- [ ] Add search and filters
+- [ ] Create statistics dashboard
+- [ ] Implement soft delete
+- [ ] Add operation auditing
+- [ ] Dockerize the application
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-Contribuições são bem-vindas! Para contribuir:
+Contributions are welcome! To contribute:
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
-5. Abra um Pull Request
+1. Fork the project
+2. Create a branch for your feature (`git checkout -b feature/MyFeature`)
+3. Commit your changes (`git commit -m 'Add MyFeature'`)
+4. Push to the branch (`git push origin feature/MyFeature`)
+5. Open a Pull Request
 
-## 📄 Licença
+## 📄 License
 
-Este projeto é licenciado sob a MIT License.
+This project is licensed under the MIT License.
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
-Desenvolvido por **Reinaldo Jesus Santana**
+Developed by **Reinaldo Jesus Santana**
 
 - Email: reinaldojsantana@gmail.com
 - linkdIn: https://www.linkedin.com/in/reinaldo-jesus-santana-09079814/
