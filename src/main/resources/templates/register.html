@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Registrar Cartão de Crédito</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .container {
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                padding: 40px;
+                width: 100%;
+                max-width: 500px;
+                backdrop-filter: blur(10px);
+            }
+
+            h1 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 30px;
+                font-size: 28px;
+                font-weight: 600;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 600;
+                color: #555;
+                font-size: 14px;
+            }
+
+            input[type="text"],
+            select {
+                width: 100%;
+                padding: 12px 16px;
+                border: 2px solid #e1e5e9;
+                border-radius: 8px;
+                font-size: 16px;
+                transition: all 0.3s ease;
+                background-color: #f8f9fa;
+            }
+
+            input[type="text"]:focus,
+            select:focus {
+                outline: none;
+                border-color: #667eea;
+                background-color: white;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            select {
+                cursor: pointer;
+            }
+
+            .error {
+                color: #e74c3c;
+                font-size: 13px;
+                margin-top: 5px;
+                font-weight: 500;
+            }
+
+            .form-actions {
+                display: flex;
+                gap: 15px;
+                margin-top: 30px;
+            }
+
+            button[type="submit"] {
+                flex: 1;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                padding: 14px 24px;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            button[type="submit"]:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            }
+
+            .link-button {
+                flex: 1;
+                display: inline-block;
+                text-align: center;
+                padding: 14px 24px;
+                background-color: transparent;
+                color: #667eea;
+                text-decoration: none;
+                border: 2px solid #667eea;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            .link-button:hover {
+                background-color: #667eea;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            }
+
+            @media (max-width: 480px) {
+                .container {
+                    padding: 25px;
+                }
+
+                .form-actions {
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Registrar Cartão de Crédito</h1>
+
+            <form th:action="@{/cards}" th:object="${cardForm}" method="post">
+                <div class="form-group">
+                    <label for="holderName">Nome do Titular</label>
+                    <input type="text" 
+                           id="holderName"
+                           th:field="*{holderName}" 
+                           placeholder="Digite o nome completo" />
+                    <div class="error" 
+                         th:if="${#fields.hasErrors('holderName')}" 
+                         th:errors="*{holderName}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="number">Número do Cartão</label>
+                    <input type="text" 
+                           id="number"
+                           th:field="*{number}" 
+                           placeholder="4111 1111 1111 1111" 
+                           maxlength="19" />
+                    <div class="error" 
+                         th:if="${#fields.hasErrors('number')}" 
+                         th:errors="*{number}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="brand">Bandeira</label>
+                    <select id="brand" th:field="*{brand}">
+                        <option value="">Selecione a bandeira</option>
+                        <option th:each="b : ${brands}"
+                                th:value="${b}"
+                                th:text="${b}"></option>
+                    </select>
+                    <div class="error" 
+                         th:if="${#fields.hasErrors('brand')}" 
+                         th:errors="*{brand}"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit">Registrar Cartão</button>
+                    <a th:href="@{/cards/list}" class="link-button">Ver Cartões</a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
